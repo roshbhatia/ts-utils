@@ -1,4 +1,5 @@
 {
+  biome,
   bun2nix,
   stdenvNoCC,
 }:
@@ -7,7 +8,10 @@ stdenvNoCC.mkDerivation {
   version = "0.1.0";
   src = ./.;
 
-  nativeBuildInputs = [ bun2nix.hook ];
+  nativeBuildInputs = [
+    biome
+    bun2nix.hook
+  ];
   bunDeps = bun2nix.fetchBunDeps { bunNix = ./bun.nix; };
   bunInstallFlags =
     if stdenvNoCC.hostPlatform.isDarwin then
@@ -27,7 +31,9 @@ stdenvNoCC.mkDerivation {
   doCheck = true;
   checkPhase = ''
     runHook preCheck
-    bun run check
+    biome check .
+    bun run typecheck
+    bun test
     runHook postCheck
   '';
 
