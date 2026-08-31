@@ -63,6 +63,7 @@
             biome
             bun
             bun2nix
+            ripgrep
           ];
         };
       });
