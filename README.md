@@ -4,13 +4,17 @@ Shared TypeScript primitives for Roshan's terminal tools.
 
 The `ui` exports define theme, status, navigation, and layout contracts.
 OpenTUI applications can consume them without coupling the contracts to one
-renderer.
+renderer. The terminal palette resolver maps shared roles to ANSI slots and
+keeps application surfaces transparent.
 
 ```ts
-import { actionFor, defaultPalette, resolveLayout } from "@roshbhatia/ts-utils";
+import {
+  resolveLayout,
+  resolveTerminalPalette,
+} from "@roshbhatia/ts-utils";
 
-const action = actionFor({ name: "j", ctrl: false });
 const frame = resolveLayout(160, 48, true);
+const palette = resolveTerminalPalette(await renderer.getPalette());
 ```
 
 ## Development
