@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - run: ./hack/verify-release-tag.sh
+      - run: nix flake check --print-build-logs
+
+  package:
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - name: Build package archive
+        run: |
+          nix develop --command bun install --frozen-lockfile
+          nix develop --command bun run build
+          mkdir -p dist-release
+          nix develop --command bun pm pack --destination dist-release
+          (cd dist-release && shasum -a 256 ./*.tgz > SHA256SUMS)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ts-utils-package
+          path: dist-release/*
+
+  release:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Create or update release
+        run: |
+          if gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" dist/* --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$GITHUB_REF_NAME" dist/* --generate-notes --repo "$GITHUB_REPOSITORY"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

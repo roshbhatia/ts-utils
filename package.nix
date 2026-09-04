@@ -5,7 +5,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "ts-utils";
-  version = "0.5.0";
+  version = "0.6.0";
   src = ./.;
 
   nativeBuildInputs = [
@@ -39,8 +39,21 @@ stdenvNoCC.mkDerivation {
 
   installPhase = ''
     runHook preInstall
+    runtime_directory="$TMPDIR/ts-utils-runtime"
+    mkdir -p "$runtime_directory"
+    cp bun.lock package.json "$runtime_directory/"
+    (
+      cd "$runtime_directory"
+      bun install \
+        --frozen-lockfile \
+        --ignore-scripts \
+        --linker=hoisted \
+        --offline \
+        --production
+    )
     mkdir -p "$out/share/ts-utils"
-    cp -R dist package.json src "$out/share/ts-utils/"
+    cp -R dist package.json "$runtime_directory/node_modules" src "$out/share/ts-utils/"
+    find "$out/share/ts-utils/src" -type f -name '*.test.ts' -delete
     runHook postInstall
   '';
 }

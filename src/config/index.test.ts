@@ -18,7 +18,11 @@ describe("config", () => {
     await mkdir(directory);
     await writeFile(
       join(directory, "config.yaml"),
-      "color: always\nenabled: true\nproviders:\n  diff: [git]\n",
+      `color: always
+enabled: true
+providers:
+  diff: [git]
+`,
     );
     const got = loadConfig(TestConfig, {
       defaults: { color: "auto", enabled: false, providers: { diff: [] } },

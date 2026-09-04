@@ -19,7 +19,12 @@
   outputs =
     inputs:
     let
-      eachSystem = inputs.nixpkgs.lib.genAttrs (import inputs.systems);
+      supportedSystems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      eachSystem = inputs.nixpkgs.lib.genAttrs supportedSystems;
       pkgsFor = eachSystem (
         system:
         import inputs.nixpkgs {
@@ -53,9 +58,30 @@
         default = pkgsFor.${system}.callPackage ./package.nix { };
       });
 
-      checks = eachSystem (system: {
-        default = pkgsFor.${system}.callPackage ./package.nix { };
-      });
+      checks = eachSystem (
+        system:
+        let
+          pkgs = pkgsFor.${system};
+        in
+        {
+          default = pkgs.callPackage ./package.nix { };
+          repository =
+            pkgs.runCommand "ts-utils-repository-check"
+              {
+                nativeBuildInputs = [
+                  pkgs.actionlint
+                  pkgs.shellcheck
+                  pkgs.shfmt
+                ];
+              }
+              ''
+                actionlint ${./.github/workflows/ci.yml} ${./.github/workflows/release.yml}
+                shellcheck ${./hack/verify-release-tag.sh}
+                shfmt -i 2 -ci -sr -s -d ${./hack/verify-release-tag.sh}
+                touch "$out"
+              '';
+        }
+      );
 
       devShells = eachSystem (system: {
         default = pkgsFor.${system}.mkShellNoCC {
@@ -63,7 +89,10 @@
             biome
             bun
             bun2nix
+            actionlint
             ripgrep
+            shellcheck
+            shfmt
           ];
         };
       });
