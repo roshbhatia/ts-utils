@@ -7,6 +7,7 @@
   "types": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./animation": "./src/animation/index.ts",
     "./config": "./src/config/index.ts",
     "./template": "./src/template/index.ts",
     "./ui": "./src/ui/index.ts"
@@ -14,14 +15,16 @@
   "files": [
     "src/**/*.ts",
     "!src/**/*.test.ts",
-    "dist"
+    "dist",
+    "schema"
   ],
   "scripts": {
-    "build": "bun build src/index.ts src/config/index.ts src/template/index.ts src/ui/index.ts --root src --outdir dist --target bun --format esm --external effect --external handlebars",
-    "check": "bun run format:check && bun run typecheck && bun test",
+    "build": "bun build src/index.ts src/animation/index.ts src/config/index.ts src/template/index.ts src/ui/index.ts --root src --outdir dist --target bun --format esm --external effect --external handlebars",
+    "check": "bun run format:check && bun run typecheck && bun test && bun run schema:animation --check",
     "format": "biome check --write .",
     "format:check": "biome check .",
     "nix:lock": "bunx bun2nix -o bun.nix",
+    "schema:animation": "bun run scripts/generate-animation-schema.ts",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {

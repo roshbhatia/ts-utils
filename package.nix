@@ -52,7 +52,7 @@ stdenvNoCC.mkDerivation {
         --production
     )
     mkdir -p "$out/share/ts-utils"
-    cp -R dist package.json "$runtime_directory/node_modules" src "$out/share/ts-utils/"
+    cp -R dist package.json schema "$runtime_directory/node_modules" src "$out/share/ts-utils/"
     find "$out/share/ts-utils/src" -type f -name '*.test.ts' -delete
     runHook postInstall
   '';

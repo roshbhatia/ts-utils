@@ -1,0 +1,362 @@
+{
+  "$id": "https://roshbhatia.github.io/schemas/terminal.animation.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": [
+        "terminal.animation/v1"
+      ]
+    },
+    "animations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "full": {
+            "type": "object",
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 512
+                      }
+                    ]
+                  },
+                  "height": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 256
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              "playback": {
+                "type": "string",
+                "enum": [
+                  "once",
+                  "loop",
+                  "ping_pong"
+                ]
+              },
+              "easing": {
+                "type": "string",
+                "enum": [
+                  "linear",
+                  "ease_in",
+                  "ease_out",
+                  "ease_in_out"
+                ]
+              },
+              "fps": {
+                "type": "integer",
+                "allOf": [
+                  {
+                    "minimum": 1,
+                    "maximum": 60
+                  }
+                ]
+              },
+              "frames": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "default",
+                        "accent",
+                        "muted",
+                        "success",
+                        "warning",
+                        "danger"
+                      ]
+                    },
+                    "duration_ms": {
+                      "type": "integer",
+                      "allOf": [
+                        {
+                          "minimum": 1,
+                          "maximum": 10000
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "style"
+                  ],
+                  "additionalProperties": false
+                },
+                "allOf": [
+                  {
+                    "minItems": 1
+                  },
+                  {
+                    "maxItems": 512
+                  }
+                ]
+              }
+            },
+            "required": [
+              "dimensions",
+              "playback",
+              "easing",
+              "frames"
+            ],
+            "additionalProperties": false
+          },
+          "compact": {
+            "type": "object",
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 512
+                      }
+                    ]
+                  },
+                  "height": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 256
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              "playback": {
+                "type": "string",
+                "enum": [
+                  "once",
+                  "loop",
+                  "ping_pong"
+                ]
+              },
+              "easing": {
+                "type": "string",
+                "enum": [
+                  "linear",
+                  "ease_in",
+                  "ease_out",
+                  "ease_in_out"
+                ]
+              },
+              "fps": {
+                "type": "integer",
+                "allOf": [
+                  {
+                    "minimum": 1,
+                    "maximum": 60
+                  }
+                ]
+              },
+              "frames": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "default",
+                        "accent",
+                        "muted",
+                        "success",
+                        "warning",
+                        "danger"
+                      ]
+                    },
+                    "duration_ms": {
+                      "type": "integer",
+                      "allOf": [
+                        {
+                          "minimum": 1,
+                          "maximum": 10000
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "style"
+                  ],
+                  "additionalProperties": false
+                },
+                "allOf": [
+                  {
+                    "minItems": 1
+                  },
+                  {
+                    "maxItems": 512
+                  }
+                ]
+              }
+            },
+            "required": [
+              "dimensions",
+              "playback",
+              "easing",
+              "frames"
+            ],
+            "additionalProperties": false
+          },
+          "reduced_motion": {
+            "type": "object",
+            "properties": {
+              "dimensions": {
+                "type": "object",
+                "properties": {
+                  "width": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 512
+                      }
+                    ]
+                  },
+                  "height": {
+                    "type": "integer",
+                    "allOf": [
+                      {
+                        "minimum": 1,
+                        "maximum": 256
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              "playback": {
+                "type": "string",
+                "enum": [
+                  "once",
+                  "loop",
+                  "ping_pong"
+                ]
+              },
+              "easing": {
+                "type": "string",
+                "enum": [
+                  "linear",
+                  "ease_in",
+                  "ease_out",
+                  "ease_in_out"
+                ]
+              },
+              "fps": {
+                "type": "integer",
+                "allOf": [
+                  {
+                    "minimum": 1,
+                    "maximum": 60
+                  }
+                ]
+              },
+              "frames": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string",
+                      "enum": [
+                        "default",
+                        "accent",
+                        "muted",
+                        "success",
+                        "warning",
+                        "danger"
+                      ]
+                    },
+                    "duration_ms": {
+                      "type": "integer",
+                      "allOf": [
+                        {
+                          "minimum": 1,
+                          "maximum": 10000
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "content",
+                    "style"
+                  ],
+                  "additionalProperties": false
+                },
+                "allOf": [
+                  {
+                    "minItems": 1
+                  },
+                  {
+                    "maxItems": 512
+                  }
+                ]
+              }
+            },
+            "required": [
+              "dimensions",
+              "playback",
+              "easing",
+              "frames"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "full",
+          "reduced_motion"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "animations"
+  ],
+  "additionalProperties": false,
+  "title": "Renderer-neutral terminal animation"
+}
